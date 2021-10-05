@@ -49,7 +49,7 @@ public class MessageUtils {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public static void sendChatMessage(String message, Collection<CommandSender> senders) {
+    public static void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendChatMessage(component, senders);
     }
@@ -58,7 +58,7 @@ public class MessageUtils {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public static void sendChatMessage(Component component, Collection<CommandSender> senders) {
+    public static void sendChatMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             sender.sendMessage(component);
         }
@@ -70,7 +70,7 @@ public class MessageUtils {
         sendActionBarMessage(component, senders);
     }
 
-    public static void sendActionBarMessage(String message, Collection<CommandSender> senders) {
+    public static void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendActionBarMessage(component, senders);
     }
@@ -79,7 +79,7 @@ public class MessageUtils {
         sendActionBarMessage(component,Arrays.asList(senders));
     }
 
-    public static void sendActionBarMessage(Component component, Collection<CommandSender> senders) {
+    public static void sendActionBarMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
                 sender.sendActionBar(component);
@@ -92,7 +92,7 @@ public class MessageUtils {
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<CommandSender> senders) {
+    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
@@ -101,7 +101,7 @@ public class MessageUtils {
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<CommandSender> senders) {
+    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         BossBar bossBar = BossBar.bossBar(component, 1, color, overlay);
 
         for (CommandSender sender: senders) {
