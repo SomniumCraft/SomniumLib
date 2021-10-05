@@ -1,0 +1,6 @@
+name: SomniumLib
+version: ${project.version}
+main: ru.somniumcraft.somniumlib.SomniumLib
+api-version: 1.17
+authors: [ div2005, VitSun ]
+website: somnium-craft.ru
