@@ -6,7 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import ru.somniumcraft.somniumlib.SomniumLib;
+import net.kyori.adventure.bossbar.BossBar;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,21 +45,40 @@ public class MessageUtils {
 
     public static void sendChatMessage(String message, CommandSender... senders) {
         Component component = Component.text(translateHexColorCodes(message));
+        sendChatMessage(component, Arrays.asList(senders));
+    }
+
+    public static void sendChatMessage(String message, Iterable<CommandSender> senders) {
+        Component component = Component.text(translateHexColorCodes(message));
         sendChatMessage(component, senders);
     }
 
     public static void sendChatMessage(Component component, CommandSender... senders) {
+        sendChatMessage(component, Arrays.asList(senders));
+    }
+
+    public static void sendChatMessage(Component component, Iterable<CommandSender> senders) {
         for (CommandSender sender: senders) {
             sender.sendMessage(component);
         }
     }
+
 
     public static void sendActionBarMessage(String message, CommandSender... senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendActionBarMessage(component, senders);
     }
 
+    public static void sendActionBarMessage(String message, Iterable<CommandSender> senders) {
+        Component component = Component.text(translateHexColorCodes(message));
+        sendActionBarMessage(component, senders);
+    }
+
     public static void sendActionBarMessage(Component component, CommandSender... senders) {
+        sendActionBarMessage(component,Arrays.asList(senders));
+    }
+
+    public static void sendActionBarMessage(Component component, Iterable<CommandSender> senders) {
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
                 sender.sendActionBar(component);
@@ -65,16 +86,22 @@ public class MessageUtils {
         }
     }
 
-    public static void sendBossBarMessage(String message, net.kyori.adventure.bossbar.BossBar.Color color, net.kyori.adventure.bossbar.BossBar.Overlay overlay, Long duration, CommandSender... senders)
-    {
+    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
 
-    public static void sendBossBarMessage(Component component, net.kyori.adventure.bossbar.BossBar.Color color, net.kyori.adventure.bossbar.BossBar.Overlay overlay, Long duration, CommandSender... senders)
-    {
+    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Iterable<CommandSender> senders) {
+        Component component = Component.text(translateHexColorCodes(message));
+        sendBossBarMessage(component, color, overlay, duration, senders);
+    }
 
-        net.kyori.adventure.bossbar.BossBar bossBar = net.kyori.adventure.bossbar.BossBar.bossBar(component, 1, color, overlay);
+    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
+        sendBossBarMessage(component,color,overlay,duration,senders);
+    }
+
+    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Iterable<CommandSender> senders) {
+        BossBar bossBar = BossBar.bossBar(component, 1, color, overlay);
 
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
@@ -97,8 +124,6 @@ public class MessageUtils {
                 }
             }.runTaskTimer(SomniumLib.getInstance(), 0L, 20L);
         }
-
-
     }
 
     public static String getFormattedTime(long seconds)
