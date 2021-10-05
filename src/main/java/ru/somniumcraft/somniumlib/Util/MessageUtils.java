@@ -9,6 +9,7 @@ import ru.somniumcraft.somniumlib.SomniumLib;
 import net.kyori.adventure.bossbar.BossBar;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,7 @@ public class MessageUtils {
     {
         final Pattern hexPattern = Pattern.compile("\\{#([A-Fa-f0-9]{6})\\}" );
         Matcher matcher = hexPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
         while (matcher.find()) {
             String group = matcher.group(1);
             matcher.appendReplacement(buffer, COLOR_CHAR + "x"
@@ -48,7 +49,7 @@ public class MessageUtils {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public static void sendChatMessage(String message, Iterable<CommandSender> senders) {
+    public static void sendChatMessage(String message, Collection<CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendChatMessage(component, senders);
     }
@@ -57,7 +58,7 @@ public class MessageUtils {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public static void sendChatMessage(Component component, Iterable<CommandSender> senders) {
+    public static void sendChatMessage(Component component, Collection<CommandSender> senders) {
         for (CommandSender sender: senders) {
             sender.sendMessage(component);
         }
@@ -69,7 +70,7 @@ public class MessageUtils {
         sendActionBarMessage(component, senders);
     }
 
-    public static void sendActionBarMessage(String message, Iterable<CommandSender> senders) {
+    public static void sendActionBarMessage(String message, Collection<CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendActionBarMessage(component, senders);
     }
@@ -78,7 +79,7 @@ public class MessageUtils {
         sendActionBarMessage(component,Arrays.asList(senders));
     }
 
-    public static void sendActionBarMessage(Component component, Iterable<CommandSender> senders) {
+    public static void sendActionBarMessage(Component component, Collection<CommandSender> senders) {
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
                 sender.sendActionBar(component);
@@ -88,19 +89,19 @@ public class MessageUtils {
 
     public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         Component component = Component.text(translateHexColorCodes(message));
-        sendBossBarMessage(component, color, overlay, duration, senders);
+        sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Iterable<CommandSender> senders) {
+    public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<CommandSender> senders) {
         Component component = Component.text(translateHexColorCodes(message));
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
 
     public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
-        sendBossBarMessage(component,color,overlay,duration,senders);
+        sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Iterable<CommandSender> senders) {
+    public static void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<CommandSender> senders) {
         BossBar bossBar = BossBar.bossBar(component, 1, color, overlay);
 
         for (CommandSender sender: senders) {
