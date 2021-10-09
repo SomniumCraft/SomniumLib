@@ -1,6 +1,7 @@
 package ru.somniumcraft.somniumlib.Util;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,21 +20,21 @@ public class MessageUtils {
     private static final char COLOR_CHAR = '\u00A7';
     private static final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
 
-    public static String translateHexColorCodes(String message)
+    public static Component translateColorCodes(String message)
     {
         final Pattern hexPattern = Pattern.compile("\\{#([A-Fa-f0-9]{6})\\}" );
         Matcher matcher = hexPattern.matcher(message);
         StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
         while (matcher.find()) {
             String group = matcher.group(1);
-            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
-                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
-                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
-                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
+            matcher.appendReplacement(buffer, '&' + "x"
+                    + '&' + group.charAt(0) + '&' + group.charAt(1)
+                    + '&' + group.charAt(2) + '&' + group.charAt(3)
+                    + '&' + group.charAt(4) + '&' + group.charAt(5)
             );
         }
 
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+        return LegacyComponentSerializer.legacySection().deserialize(ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString()));
     }
 
     public static String removeColorCodes(String message) {
@@ -45,12 +46,12 @@ public class MessageUtils {
     }
 
     public static void sendChatMessage(String message, CommandSender... senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendChatMessage(component, Arrays.asList(senders));
     }
 
     public static void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendChatMessage(component, senders);
     }
 
@@ -66,12 +67,12 @@ public class MessageUtils {
 
 
     public static void sendActionBarMessage(String message, CommandSender... senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
     public static void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
@@ -88,12 +89,12 @@ public class MessageUtils {
     }
 
     public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
     public static void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
-        Component component = Component.text(translateHexColorCodes(message));
+        Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
 
