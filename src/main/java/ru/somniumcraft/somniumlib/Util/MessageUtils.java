@@ -128,16 +128,16 @@ public class MessageUtils {
         }
     }
 
-    public static String getFormattedTime(long seconds)
+    public static String getFormattedTime(long milliseconds)
     {
         String time = "";
 
-        long d = Math.floorDiv(seconds, 86400);
-        seconds %= 86400;
-        long h = Math.floorDiv(seconds,3600);
-        seconds %= 3600;
-        long m = Math.floorDiv(seconds,60);
-        long s = seconds % 60;
+        long d = Math.floorDiv(milliseconds, 86400000);
+        milliseconds %= 86400000;
+        long h = Math.floorDiv(milliseconds,3600000);
+        milliseconds %= 3600000;
+        long m = Math.floorDiv(milliseconds,60000);
+        long s = milliseconds % 60000;
 
         if (d > 0)
             time += d + "д ";
@@ -145,7 +145,7 @@ public class MessageUtils {
             time += h + "ч ";
         if (m > 0)
             time += m + "м ";
-        if (seconds > 0)
+        if (milliseconds > 0)
             time += s + "c";
 
         return time;
