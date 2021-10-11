@@ -1,6 +1,5 @@
 package ru.somniumcraft.somniumlib;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SomniumLib extends JavaPlugin {
