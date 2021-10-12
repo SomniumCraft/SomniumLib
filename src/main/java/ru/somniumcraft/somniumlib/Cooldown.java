@@ -25,7 +25,8 @@ public class Cooldown {
     }
 
     public void putOnCooldown(Player player, long milisec) {
-        cooldownMap.put(player.getUniqueId(), milisec);
+
+        cooldownMap.put(player.getUniqueId(), System.currentTimeMillis() + milisec);
     }
 
     public long getRemainingTime(Player player){

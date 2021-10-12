@@ -132,12 +132,13 @@ public class MessageUtils {
     {
         String time = "";
 
-        long d = Math.floorDiv(milliseconds, 86400000);
-        milliseconds %= 86400000;
-        long h = Math.floorDiv(milliseconds,3600000);
-        milliseconds %= 3600000;
-        long m = Math.floorDiv(milliseconds,60000);
-        long s = milliseconds % 60000;
+        long d = Math.floorDiv(milliseconds, 86400000L);
+        milliseconds %= 86400000L;
+        long h = Math.floorDiv(milliseconds,3600000L);
+        milliseconds %= 3600000L;
+        long m = Math.floorDiv(milliseconds,60000L);
+        milliseconds %= 60000L;
+        long s = Math.floorDiv(milliseconds,1000L);
 
         if (d > 0)
             time += d + "д ";
