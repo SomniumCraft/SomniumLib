@@ -14,6 +14,7 @@ public final class SomniumLib extends SomniumPlugin {
     private JacksonUtils jacksonUtils;
     private MessageUtils messageUtils;
     private SafeLander safeLander;
+    private PersistentDataUtils persistentDataUtils;
 
     public static SomniumLib getInstance() {
         return (SomniumLib)pluginInstance;
@@ -26,6 +27,7 @@ public final class SomniumLib extends SomniumPlugin {
         jacksonUtils = new JacksonUtils();
         messageUtils = new MessageUtils();
         safeLander = new SafeLander();
+        persistentDataUtils = new PersistentDataUtils();
     }
 
     @Override
@@ -54,5 +56,9 @@ public final class SomniumLib extends SomniumPlugin {
 
     public SafeLander getSafeLander() {
         return safeLander;
+    }
+
+    public PersistentDataUtils getPersistentDataUtils() {
+        return persistentDataUtils;
     }
 }
