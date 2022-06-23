@@ -7,7 +7,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class SafeLander {
 
-    public static void land(Player player){
+    public void land(Player player){
         Location playerLocation = player.getLocation();
 
         if(playerLocation.getY() > 384)

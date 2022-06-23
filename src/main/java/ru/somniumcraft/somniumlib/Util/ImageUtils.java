@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class ImageUtils {
 
-    public static BufferedImage loadFromURL(String url) throws IOException {
+    public BufferedImage loadFromURL(String url) throws IOException {
         BufferedImage bufferedImage = null;
         bufferedImage = ImageIO.read(new URL(url));
 

@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class Cooldown {
     private HashMap<UUID,Long> cooldownMap;
-    private String name;
-    private String noCooldownPermsission;
+    private final String name;
+    private final String noCooldownPermsission;
 
     public Cooldown(String name, String noCooldownPermsission) {
         this.cooldownMap = new HashMap<UUID,Long>();
@@ -18,9 +18,7 @@ public class Cooldown {
 
     public boolean isOnCooldown(Player player) {
         if(cooldownMap.containsKey(player.getUniqueId()))
-            if(cooldownMap.get(player.getUniqueId()) > System.currentTimeMillis())
-                return true;
-
+            return cooldownMap.get(player.getUniqueId()) > System.currentTimeMillis();
         return false;
     }
 

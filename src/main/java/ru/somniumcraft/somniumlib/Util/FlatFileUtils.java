@@ -10,8 +10,8 @@ import java.io.Serializable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class FlatFile {
-    public static <T extends Serializable> boolean save(String filePath, T object) {
+public class FlatFileUtils {
+    public <T extends Serializable> boolean save(String filePath, T object) {
         try {
             BukkitObjectOutputStream out = new BukkitObjectOutputStream(new GZIPOutputStream(new FileOutputStream(filePath)));
             out.writeObject(object);
@@ -21,7 +21,7 @@ public class FlatFile {
             return false;
         }
     }
-    public static <T extends Serializable> T load(String filePath){
+    public <T extends Serializable> T load(String filePath){
         try {
             BukkitObjectInputStream in = new BukkitObjectInputStream(new GZIPInputStream(new FileInputStream(filePath)));
             T object = (T) in.readObject();
