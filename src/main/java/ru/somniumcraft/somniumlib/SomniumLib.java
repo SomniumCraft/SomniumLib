@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
+import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Util.*;
 
 public final class SomniumLib extends SomniumPlugin {
@@ -15,6 +16,8 @@ public final class SomniumLib extends SomniumPlugin {
     private MessageUtils messageUtils;
     private SafeLander safeLander;
     private PersistentDataUtils persistentDataUtils;
+
+    private SharedConfig sharedConfig;
 
     public static SomniumLib getInstance() {
         return (SomniumLib)pluginInstance;
@@ -60,5 +63,9 @@ public final class SomniumLib extends SomniumPlugin {
 
     public PersistentDataUtils getPersistentDataUtils() {
         return persistentDataUtils;
+    }
+
+    public SharedConfig getSharedConfig() {
+        return sharedConfig;
     }
 }
