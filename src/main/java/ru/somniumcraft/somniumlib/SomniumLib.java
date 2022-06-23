@@ -8,7 +8,7 @@ import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
 import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Util.*;
 
-public final class SomniumLib extends SomniumPlugin {
+public class SomniumLib extends SomniumPlugin {
 
     private FlatFileUtils flatFileUtils;
     private ImageUtils imageUtils;
@@ -65,7 +65,5 @@ public final class SomniumLib extends SomniumPlugin {
         return persistentDataUtils;
     }
 
-    public SharedConfig getSharedConfig() {
-        return sharedConfig;
-    }
+    public SharedConfig getSharedConfig() { return sharedConfig; }
 }
