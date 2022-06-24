@@ -1,15 +1,20 @@
 package ru.somniumcraft.somniumlib.Util;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.kyori.adventure.bossbar.BossBar;
 import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
+import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.SomniumLib;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -17,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class MessageUtils{
 
-    private final SomniumPlugin plugin;
+    private final SomniumLib plugin;
 
     private final char COLOR_CHAR = '\u00A7';
     private final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
@@ -29,6 +34,9 @@ public class MessageUtils{
 
     public Component translateColorCodes(String message)
     {
+        message = message.replace("{primaryColor}", "{" + plugin.getSharedConfig().getPrimaryColor() + "}");
+        message = message.replace("{secondaryColor}", "{" + plugin.getSharedConfig().getSecondaryColor() + "}");
+
         final Pattern hexPattern = Pattern.compile("\\{#([A-Fa-f0-9]{6})\\}" );
         Matcher matcher = hexPattern.matcher(message);
         StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
@@ -72,6 +80,18 @@ public class MessageUtils{
         }
     }
 
+    public void sendLocalChatMessage(Component component, Location location, String spyPermission) {
+
+        Collection<Player> nearbyPlayers = location.getNearbyPlayers(plugin.getSharedConfig().getLocalChatRange());
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (nearbyPlayers.contains(online)) {
+                sendChatMessage(component.replaceText(TextReplacementConfig.builder().match("{chatPrefix}").replacement(plugin.getSharedConfig().getLocalChatPrefix()).build()));
+            } else if (online.hasPermission(spyPermission)) {
+                sendChatMessage(component.replaceText(TextReplacementConfig.builder().match("{chatPrefix}").replacement(plugin.getSharedConfig().getSpyChatPrefix()).build()));
+            }
+        }
+    }
 
     public void sendActionBarMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);
