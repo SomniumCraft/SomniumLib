@@ -9,7 +9,7 @@ import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Util.*;
 
 public class SomniumLib extends SomniumPlugin {
-
+    private static SomniumLib instanse;
     private FlatFileUtils flatFileUtils;
     private ImageUtils imageUtils;
     private JacksonUtils jacksonUtils;
@@ -20,11 +20,12 @@ public class SomniumLib extends SomniumPlugin {
     private SharedConfig sharedConfig;
 
     public static SomniumLib getInstance() {
-        return (SomniumLib)pluginInstance;
+        return instanse;
     }
 
     @Override
     public void Load(){
+        instanse = this;
         flatFileUtils = new FlatFileUtils();
         imageUtils = new ImageUtils();
         jacksonUtils = new JacksonUtils();

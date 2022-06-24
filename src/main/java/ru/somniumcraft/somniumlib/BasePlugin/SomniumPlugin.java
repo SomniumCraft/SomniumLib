@@ -5,7 +5,7 @@ import ru.somniumcraft.somniumlib.Config.ConfigManager;
 import ru.somniumcraft.somniumlib.Config.ConfigUtils;
 
 public abstract class SomniumPlugin extends JavaPlugin {
-    protected static SomniumPlugin pluginInstance;
+    private SomniumPlugin pluginInstance;
     private ConfigManager configManager;
     private ConfigUtils configUtils;
 
