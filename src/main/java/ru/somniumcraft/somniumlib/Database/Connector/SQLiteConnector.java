@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class SQLiteConnector extends AbstractSQLConnector{
-    private final String databaseType = "sqlite";
 
     public SQLiteConnector(String databasePath, String database, String user, String password){
         super(true);
@@ -12,6 +11,7 @@ public class SQLiteConnector extends AbstractSQLConnector{
         super.database = database;
         super.user = user;
         super.password = password;
+        databaseType = "sqlite";
     }
 
     @Override
@@ -25,10 +25,5 @@ public class SQLiteConnector extends AbstractSQLConnector{
         config.setIdleTimeout(45000); // 45 Sec
         config.setMaximumPoolSize(50); // 50 Connections (including idle connections)
         this.dataSource = new HikariDataSource(config);
-    }
-
-    @Override
-    public String getDatabaseType() {
-        return databaseType;
     }
 }

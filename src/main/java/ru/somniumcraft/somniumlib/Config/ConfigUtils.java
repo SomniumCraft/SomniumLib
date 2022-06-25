@@ -1,5 +1,6 @@
 package ru.somniumcraft.somniumlib.Config;
 
+import lombok.experimental.UtilityClass;
 import org.apache.commons.io.FileUtils;
 import ru.somniumcraft.somniumlib.SomniumLib;
 import ru.somniumcraft.somniumlib.Util.JacksonUtils;
@@ -7,18 +8,11 @@ import ru.somniumcraft.somniumlib.Util.JacksonUtils;
 import java.io.File;
 import java.io.IOException;
 
+@UtilityClass
 public class ConfigUtils {
 
-    private final SomniumLib plugin;
-    private final JacksonUtils jacksonUtils;
-
-    public ConfigUtils() {
-        this.plugin = SomniumLib.getInstance();
-        this.jacksonUtils = plugin.getJacksonUtils();
-    }
-
     public void save(File target, Object value) {
-        String data = jacksonUtils.objectToYaml(value);
+        String data = JacksonUtils.objectToYaml(value);
         try {
             FileUtils.writeStringToFile(target, data);
         } catch (IOException exception) {
@@ -27,7 +21,7 @@ public class ConfigUtils {
     }
 
     public void saveIfNotExists(File target, Object value) {
-        String data = jacksonUtils.objectToYaml(value);
+        String data = JacksonUtils.objectToYaml(value);
         try {
             FileUtils.writeStringToFile(target, data);
         } catch (IOException exception) {
@@ -43,7 +37,7 @@ public class ConfigUtils {
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
-            return jacksonUtils.yamlToObject(data, tClass);
+            return JacksonUtils.yamlToObject(data, tClass);
         }
         T t = null;
         try {

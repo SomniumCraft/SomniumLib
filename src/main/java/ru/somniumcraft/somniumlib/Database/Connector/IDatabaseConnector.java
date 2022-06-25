@@ -14,5 +14,4 @@ public interface IDatabaseConnector {
     void closeResources(ResultSet resultSet, PreparedStatement preparedStatement);
 
     String getDatabaseType();
-
 }

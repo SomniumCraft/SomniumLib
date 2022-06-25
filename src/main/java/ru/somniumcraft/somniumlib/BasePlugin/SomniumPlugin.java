@@ -1,13 +1,15 @@
 package ru.somniumcraft.somniumlib.BasePlugin;
 
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.somniumcraft.somniumlib.Config.ConfigManager;
 import ru.somniumcraft.somniumlib.Config.ConfigUtils;
 
 public abstract class SomniumPlugin extends JavaPlugin {
+
     private SomniumPlugin pluginInstance;
+    @Getter
     private ConfigManager configManager;
-    private ConfigUtils configUtils;
 
     public abstract void Load();
     public abstract void Enable();
@@ -21,8 +23,7 @@ public abstract class SomniumPlugin extends JavaPlugin {
 
     @Override
     public void onEnable(){
-        this.configUtils = new ConfigUtils();
-        this.configManager = new ConfigManager(pluginInstance, configUtils);
+        this.configManager = new ConfigManager(pluginInstance);
         configManager.Reload();
         Enable();
     }
@@ -30,9 +31,5 @@ public abstract class SomniumPlugin extends JavaPlugin {
     @Override
     public void onDisable(){
         Disable();
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
     }
 }

@@ -1,19 +1,22 @@
 package ru.somniumcraft.somniumlib;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Cooldown {
-    private HashMap<UUID,Long> cooldownMap;
-    private final String name;
-    private final String noCooldownPermsission;
 
-    public Cooldown(String name, String noCooldownPermsission) {
-        this.cooldownMap = new HashMap<UUID,Long>();
+    @Getter @Setter
+    private HashMap<UUID,Long> cooldownMap = new HashMap<>();
+    private final String name;
+    private final String noCooldownPermission;
+
+    public Cooldown(String name, String noCooldownPermission) {
         this.name = name;
-        this.noCooldownPermsission = noCooldownPermsission;
+        this.noCooldownPermission = noCooldownPermission;
     }
 
     public boolean isOnCooldown(Player player) {
@@ -34,20 +37,12 @@ public class Cooldown {
         return 0;
     }
 
-    public boolean checkAndPutOnCooldown(Player player, long millisec){
-        if (!player.hasPermission(noCooldownPermsission)) {
+    public boolean checkAndPutOnCooldown(Player player, long millis){
+        if (!player.hasPermission(noCooldownPermission)) {
             if(isOnCooldown(player))
                 return false;
-            putOnCooldown(player, millisec);
+            putOnCooldown(player, millis);
         }
         return true;
-    }
-
-    public HashMap<UUID, Long> getCooldownMap() {
-        return cooldownMap;
-    }
-
-    public void setCooldownMap(HashMap<UUID, Long> cooldownMap) {
-        this.cooldownMap = cooldownMap;
     }
 }

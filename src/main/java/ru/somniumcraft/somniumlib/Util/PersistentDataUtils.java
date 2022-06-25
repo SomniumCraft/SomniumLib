@@ -1,10 +1,12 @@
 package ru.somniumcraft.somniumlib.Util;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import ru.somniumcraft.somniumlib.SomniumLib;
 
+@UtilityClass
 public class PersistentDataUtils {
 
     private final SomniumLib plugin = SomniumLib.getInstance();

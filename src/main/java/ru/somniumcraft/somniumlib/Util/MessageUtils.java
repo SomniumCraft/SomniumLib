@@ -1,42 +1,28 @@
 package ru.somniumcraft.somniumlib.Util;
 
+import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.kyori.adventure.bossbar.BossBar;
-import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
-import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.SomniumLib;
+import net.kyori.adventure.bossbar.BossBar;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MessageUtils{
+@UtilityClass
+public class MessageUtils {
 
-    private final SomniumLib plugin;
+    private  final char COLOR_CHAR = '\u00A7';
+    private  final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
 
-    private final char COLOR_CHAR = '\u00A7';
-    private final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
-
-    public MessageUtils()
+    public  Component translateColorCodes(String message)
     {
-        this.plugin = SomniumLib.getInstance();
-    }
-
-    public Component translateColorCodes(String message)
-    {
-        message = message.replace("{primaryColor}", "{" + plugin.getSharedConfig().getPrimaryColor() + "}");
-        message = message.replace("{secondaryColor}", "{" + plugin.getSharedConfig().getSecondaryColor() + "}");
-
         final Pattern hexPattern = Pattern.compile("\\{#([A-Fa-f0-9]{6})\\}" );
         Matcher matcher = hexPattern.matcher(message);
         StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
@@ -52,7 +38,7 @@ public class MessageUtils{
         return LegacyComponentSerializer.legacySection().deserialize(ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString()));
     }
 
-    public String removeColorCodes(String message) {
+    public  String removeColorCodes(String message) {
         Matcher matcher = COLOR_PATTERN.matcher(message);
         if(matcher.find()) {
             message = matcher.replaceAll("");
@@ -60,54 +46,42 @@ public class MessageUtils{
         return message;
     }
 
-    public void sendChatMessage(String message, CommandSender... senders) {
+    public  void sendChatMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
+    public  void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendChatMessage(component, senders);
     }
 
-    public void sendChatMessage(Component component, CommandSender... senders) {
+    public  void sendChatMessage(Component component, CommandSender... senders) {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public void sendChatMessage(Component component, Collection<? extends CommandSender> senders) {
+    public  void sendChatMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             sender.sendMessage(component);
         }
     }
 
-    public void sendLocalChatMessage(Component component, Location location, String spyPermission) {
 
-        Collection<Player> nearbyPlayers = location.getNearbyPlayers(plugin.getSharedConfig().getLocalChatRange());
-
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            if (nearbyPlayers.contains(online)) {
-                sendChatMessage(component.replaceText(TextReplacementConfig.builder().match("{chatPrefix}").replacement(plugin.getSharedConfig().getLocalChatPrefix()).build()));
-            } else if (online.hasPermission(spyPermission)) {
-                sendChatMessage(component.replaceText(TextReplacementConfig.builder().match("{chatPrefix}").replacement(plugin.getSharedConfig().getSpyChatPrefix()).build()));
-            }
-        }
-    }
-
-    public void sendActionBarMessage(String message, CommandSender... senders) {
+    public  void sendActionBarMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
-    public void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
+    public  void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
-    public void sendActionBarMessage(Component component, CommandSender... senders) {
+    public  void sendActionBarMessage(Component component, CommandSender... senders) {
         sendActionBarMessage(component,Arrays.asList(senders));
     }
 
-    public void sendActionBarMessage(Component component, Collection<? extends CommandSender> senders) {
+    public  void sendActionBarMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
                 sender.sendActionBar(component);
@@ -115,21 +89,21 @@ public class MessageUtils{
         }
     }
 
-    public void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
+    public  void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
+    public  void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
 
-    public void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
+    public  void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
+    public  void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         BossBar bossBar = BossBar.bossBar(component, 1, color, overlay);
 
         for (CommandSender sender: senders) {
@@ -151,11 +125,11 @@ public class MessageUtils{
                     bossBar.progress(progress);
                     remainingDuration -= 20L;
                 }
-            }.runTaskTimer(plugin, 0L, 20L);
+            }.runTaskTimer(SomniumLib.getInstance(), 0L, 20L);
         }
     }
 
-    public String getFormattedTime(long milliseconds)
+    public  String getFormattedTime(long milliseconds)
     {
         String time = "";
 

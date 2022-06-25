@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.experimental.UtilityClass;
 
 
+@UtilityClass
 public class JacksonUtils {
 
     private final ObjectMapper JSON_MAPPER = new ObjectMapper();

@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MySQLConnector extends AbstractSQLConnector {
-    private final String databaseType = "mysql";
 
     public MySQLConnector(String host, String port, String database, String user, String password){
         super(true);
@@ -19,11 +18,7 @@ public class MySQLConnector extends AbstractSQLConnector {
         super.database = database;
         super.user = user;
         super.password = password;
-    }
-
-    @Override
-    public String getDatabaseType() {
-        return databaseType;
+        databaseType = "mysql";
     }
 
     @Override

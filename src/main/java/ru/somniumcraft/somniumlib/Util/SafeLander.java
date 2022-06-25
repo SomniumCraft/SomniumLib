@@ -1,10 +1,13 @@
 package ru.somniumcraft.somniumlib.Util;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+
+@UtilityClass
 public class SafeLander {
 
     public void land(Player player){

@@ -7,11 +7,9 @@ import java.io.File;
 public class ConfigManager {
 
     private final SomniumPlugin plugin;
-    private final ConfigUtils configUtils;
 
-    public ConfigManager(SomniumPlugin plugin, ConfigUtils configUtils) {
+    public ConfigManager(SomniumPlugin plugin) {
         this.plugin = plugin;
-        this.configUtils = configUtils;
     }
 
     public void Reload() {
@@ -22,9 +20,9 @@ public class ConfigManager {
                 var fileName = clazz.getSimpleName() + ".yml";
                 var file = new File(this.plugin.getDataFolder(), fileName);
                 field.setAccessible(true);
-                var aboba = configUtils.load(file,clazz);
+                var newConfig = ConfigUtils.load(file,clazz);
                 try {
-                    field.set(plugin, aboba);
+                    field.set(plugin, newConfig);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

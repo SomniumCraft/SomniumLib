@@ -1,5 +1,6 @@
 package ru.somniumcraft.somniumlib.Util;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+@UtilityClass
 public class FlatFileUtils {
     public <T extends Serializable> boolean save(String filePath, T object) {
         try {

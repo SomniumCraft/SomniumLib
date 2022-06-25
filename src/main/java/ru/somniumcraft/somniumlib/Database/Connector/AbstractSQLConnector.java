@@ -1,6 +1,7 @@
 package ru.somniumcraft.somniumlib.Database.Connector;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.Getter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,10 @@ public abstract class AbstractSQLConnector implements IDatabaseConnector{
     protected String database;
     protected String user;
     protected String password;
+    @Getter
     protected HikariDataSource dataSource;
+
+    protected String databaseType;
 
     public AbstractSQLConnector(boolean needConnection) {
         this.needConnection = needConnection;
@@ -61,8 +65,8 @@ public abstract class AbstractSQLConnector implements IDatabaseConnector{
         return connection;
     }
 
-    public HikariDataSource getDatasource(){
-        return this.dataSource;
+    @Override
+    public String getDatabaseType() {
+        return databaseType;
     }
-
 }
