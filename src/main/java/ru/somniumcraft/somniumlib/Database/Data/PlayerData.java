@@ -1,0 +1,169 @@
+package ru.somniumcraft.somniumlib.Database.Data;
+
+import ru.somniumcraft.somniumlib.Database.Data.Objects.PlayerDTO;
+import ru.somniumcraft.somniumlib.Database.Data.Util.PluginDataHolder;
+import ru.somniumcraft.somniumlib.SomniumLib;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class PlayerData extends PluginDataHolder {
+
+    public PlayerData() {
+        super(SomniumLib.getInstance().getDatabaseConnector());
+    }
+
+    public Optional<PlayerDTO> getPlayer(String uuid) {
+
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?")) {
+                preparedStatement.setString(1, uuid);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return Optional.of(new PlayerDTO(
+                                resultSet.getString("uuid"),
+                                resultSet.getString("name"),
+                                resultSet.getString("join_message"),
+                                resultSet.getString("leave_message")
+                        ));
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            logSQLError("Failed to get player", ex);
+            return Optional.empty();
+        }
+
+        return Optional.empty();
+    }
+
+    // get optional list of all players from database
+    public Optional<List<PlayerDTO>> getPlayers() {
+
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players")) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    List<PlayerDTO> players = new ArrayList<>();
+                    while (resultSet.next()) {
+                        players.add(new PlayerDTO(
+                                resultSet.getString("uuid"),
+                                resultSet.getString("name"),
+                                resultSet.getString("join_message"),
+                                resultSet.getString("leave_message")
+                        ));
+                    }
+                    return Optional.of(players);
+                }
+            }
+
+        } catch (SQLException ex) {
+            logSQLError("Failed to get players", ex);
+            return Optional.empty();
+        }
+    }
+
+    // update join_message by uuid as transaction
+    public boolean updateJoinMessage(String uuid, String joinMessage) {
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET join_message = ? WHERE uuid = ?")) {
+                preparedStatement.setString(1, joinMessage);
+                preparedStatement.setString(2, uuid);
+                preparedStatement.executeUpdate();
+                connection.commit();
+                connection.setAutoCommit(true);
+                return true;
+            } catch (SQLException ex) {
+                logSQLError("Failed to update join message", ex);
+                connection.rollback();
+                connection.setAutoCommit(true);
+                return false;
+            }
+        } catch (SQLException ex) {
+            logSQLError("Failed to update join message", ex);
+            return false;
+        }
+    }
+
+    // update leave_message by uuid as transaction
+    public boolean updateLeaveMessage(String uuid, String leaveMessage) {
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET leave_message = ? WHERE uuid = ?")) {
+                preparedStatement.setString(1, leaveMessage);
+                preparedStatement.setString(2, uuid);
+                preparedStatement.executeUpdate();
+                connection.commit();
+                connection.setAutoCommit(true);
+                return true;
+            } catch (SQLException ex) {
+                logSQLError("Failed to update leave message", ex);
+                connection.rollback();
+                connection.setAutoCommit(true);
+                return false;
+            }
+        } catch (SQLException ex) {
+            logSQLError("Failed to update leave message", ex);
+            return false;
+        }
+    }
+
+    // create new player in database as transaction
+    public boolean createPlayer(PlayerDTO player) {
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, name, join_message, leave_message) VALUES (?, ?, ?, ?)")) {
+                preparedStatement.setString(1, player.getUuid());
+                preparedStatement.setString(2, player.getName());
+                preparedStatement.setString(3, player.getJoinMessage());
+                preparedStatement.setString(4, player.getLeaveMessage());
+                preparedStatement.executeUpdate();
+                connection.commit();
+                connection.setAutoCommit(true);
+                return true;
+            } catch (SQLException ex) {
+                logSQLError("Failed to create player", ex);
+                connection.rollback();
+                connection.setAutoCommit(true);
+                return false;
+            }
+        } catch (SQLException ex) {
+            logSQLError("Failed to create player", ex);
+            return false;
+        }
+    }
+
+    // update player by uuid as transaction
+    public boolean updatePlayer(PlayerDTO player) {
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET name = ?, join_message = ?, leave_message = ? WHERE uuid = ?")) {
+                preparedStatement.setString(1, player.getName());
+                preparedStatement.setString(2, player.getJoinMessage());
+                preparedStatement.setString(3, player.getLeaveMessage());
+                preparedStatement.setString(4, player.getUuid());
+                preparedStatement.executeUpdate();
+                connection.commit();
+                connection.setAutoCommit(true);
+                return true;
+            } catch (SQLException ex) {
+                logSQLError("Failed to update player", ex);
+                connection.rollback();
+                connection.setAutoCommit(true);
+                return false;
+            }
+        } catch (SQLException ex) {
+            logSQLError("Failed to update player", ex);
+            return false;
+        }
+    }
+
+
+}

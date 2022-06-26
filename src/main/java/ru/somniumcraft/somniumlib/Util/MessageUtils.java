@@ -2,6 +2,7 @@ package ru.somniumcraft.somniumlib.Util;
 
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -66,6 +67,14 @@ public class MessageUtils {
         }
     }
 
+    // send message to all players in 100 radius from player using massage builder
+    public  void sendMessageToNearbyPlayers(Player player, Component component, int radius) {
+        for (Player nearbyPlayer: player.getWorld().getPlayers()) {
+            if (nearbyPlayer.getLocation().distance(player.getLocation()) <= radius) {
+                nearbyPlayer.sendMessage(component);
+            }
+        }
+    }
 
     public  void sendActionBarMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);

@@ -19,6 +19,8 @@ public class MySQLConnector extends AbstractSQLConnector {
         super.user = user;
         super.password = password;
         databaseType = "mysql";
+
+        configure();
     }
 
     @Override
