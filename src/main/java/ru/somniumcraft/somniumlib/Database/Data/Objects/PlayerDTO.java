@@ -12,15 +12,19 @@ public class PlayerDTO {
     @Getter @NonNull
     private final String name;
 
+    @Getter @NonNull
+    private final String skinUrl;
+
     @Getter
     private final String joinMessage;
 
     @Getter
     private final String leaveMessage;
 
-    public PlayerDTO(@NotNull String uuid, @NonNull String name, String joinMessage, String leaveMessage) {
+    public PlayerDTO(@NotNull String uuid, @NonNull String name, @NonNull String skinUrl, String joinMessage, String leaveMessage) {
         this.uuid = uuid;
         this.name = name;
+        this.skinUrl = skinUrl;
         this.joinMessage = joinMessage;
         this.leaveMessage = leaveMessage;
     }

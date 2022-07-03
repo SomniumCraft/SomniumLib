@@ -25,6 +25,7 @@ public class PlayerData extends PluginDataHolder {
                         return Optional.of(new PlayerDTO(
                                 resultSet.getString("uuid"),
                                 resultSet.getString("name"),
+                                resultSet.getString("skin_url"),
                                 resultSet.getString("join_message"),
                                 resultSet.getString("leave_message")
                         ));
@@ -51,6 +52,7 @@ public class PlayerData extends PluginDataHolder {
                         players.add(new PlayerDTO(
                                 resultSet.getString("uuid"),
                                 resultSet.getString("name"),
+                                resultSet.getString("skin_url"),
                                 resultSet.getString("join_message"),
                                 resultSet.getString("leave_message")
                         ));
@@ -118,11 +120,12 @@ public class PlayerData extends PluginDataHolder {
 
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
-            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, name, join_message, leave_message) VALUES (?, ?, ?, ?)")) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, name, skin_url, join_message, leave_message) VALUES (?, ?, ?, ?, ?)")) {
                 preparedStatement.setString(1, player.getUuid());
                 preparedStatement.setString(2, player.getName());
-                preparedStatement.setString(3, player.getJoinMessage());
-                preparedStatement.setString(4, player.getLeaveMessage());
+                preparedStatement.setString(3, player.getSkinUrl());
+                preparedStatement.setString(4, player.getJoinMessage());
+                preparedStatement.setString(5, player.getLeaveMessage());
                 preparedStatement.executeUpdate();
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -144,11 +147,12 @@ public class PlayerData extends PluginDataHolder {
 
         try (Connection connection = getConnection()) {
             connection.setAutoCommit(false);
-            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET name = ?, join_message = ?, leave_message = ? WHERE uuid = ?")) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET name = ?, skin_url = ?, join_message = ?, leave_message = ? WHERE uuid = ?")) {
                 preparedStatement.setString(1, player.getName());
-                preparedStatement.setString(2, player.getJoinMessage());
-                preparedStatement.setString(3, player.getLeaveMessage());
-                preparedStatement.setString(4, player.getUuid());
+                preparedStatement.setString(2, player.getSkinUrl());
+                preparedStatement.setString(3, player.getJoinMessage());
+                preparedStatement.setString(4, player.getLeaveMessage());
+                preparedStatement.setString(5, player.getUuid());
                 preparedStatement.executeUpdate();
                 connection.commit();
                 connection.setAutoCommit(true);

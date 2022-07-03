@@ -54,4 +54,44 @@ public class PlayerDTOCache {
         return null;
     }
 
+    public boolean containsPlayer(String uuid) {
+        return cache.containsKey(uuid);
+    }
+
+    public void createPlayer(PlayerDTO player) {
+        cache.put(player.getUuid(), player);
+        cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
+        playerData.updatePlayer(player);
+    }
+
+    public void updatePlayer(PlayerDTO player){
+        cache.put(player.getUuid(), player);
+        cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
+        playerData.updatePlayer(player).queue();
+    }
+
+    public void updateBasicPlayerData(String uuid, String name, String skinUrl){
+        PlayerDTO oldData = cache.get(uuid);
+        PlayerDTO newData = new PlayerDTO(uuid, name, skinUrl, oldData.getJoinMessage(), oldData.getLeaveMessage());
+        cache.put(uuid, newData);
+        cacheTimestamp.put(uuid, System.currentTimeMillis());
+        playerData.updatePlayer(newData).queue();
+    }
+
+    public void updateJoinMessage(String uuid, String message){
+        PlayerDTO oldData = cache.get(uuid);
+        PlayerDTO newData = new PlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), message, oldData.getLeaveMessage());
+        cache.put(uuid, newData);
+        cacheTimestamp.put(uuid, System.currentTimeMillis());
+        playerData.updateJoinMessage(uuid, message).queue();
+    }
+
+    public void updateLeaveMessage(String uuid, String message){
+        PlayerDTO oldData = cache.get(uuid);
+        PlayerDTO newData = new PlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), oldData.getJoinMessage(), message);
+        cache.put(uuid, newData);
+        cacheTimestamp.put(uuid, System.currentTimeMillis());
+        playerData.updateLeaveMessage(uuid, message).queue();
+    }
+
 }
