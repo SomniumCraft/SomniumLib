@@ -61,7 +61,7 @@ public class PlayerDTOCache {
     public void createPlayer(PlayerDTO player) {
         cache.put(player.getUuid(), player);
         cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
-        playerData.updatePlayer(player);
+        playerData.updatePlayer(player).queue();
     }
 
     public void updatePlayer(PlayerDTO player){
