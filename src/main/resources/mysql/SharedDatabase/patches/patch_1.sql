@@ -1,0 +1,1 @@
+INSERT INTO `patches` (`id`, `patch`) VALUES (NULL, 1);

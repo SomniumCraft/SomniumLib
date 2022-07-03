@@ -11,7 +11,7 @@ public class PlayerDTOCache {
 
     private HashMap<String, Long> cacheTimestamp = new HashMap<>();
 
-    private  long cacheLifeTime = 1000  * 15; // 5 minutes * 60
+    private  long cacheLifeTime = 5 * 60 * 1000;
 
     private AsyncWrappedPlayerData playerData;
 
