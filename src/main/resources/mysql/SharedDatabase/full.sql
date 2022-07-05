@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `players` (
-`uuid` varchar(32) NOT NULL,
+`uuid` varchar(36) NOT NULL,
 `name` varchar(16) NOT NULL,
 `skin_url` varchar(255) NOT NULL,
 `join_message` varchar(40) DEFAULT NULL,
