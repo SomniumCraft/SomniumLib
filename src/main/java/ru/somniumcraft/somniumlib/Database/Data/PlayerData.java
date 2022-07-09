@@ -12,12 +12,12 @@ import java.util.Optional;
 public class PlayerData extends PluginDataHolder {
 
     public PlayerData() {
-        super(SomniumLib.getInstance().getDatabaseConnector());
+        super(SomniumLib.getInstance().getSharedDatabaseConnector(), SomniumLib.getInstance().getServerDatabaseConnector());
     }
 
     public Optional<PlayerDTO> getPlayer(String uuid) {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?")) {
                 preparedStatement.setString(1, uuid);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -44,7 +44,7 @@ public class PlayerData extends PluginDataHolder {
     // get optional list of all players from database
     public Optional<List<PlayerDTO>> getPlayers() {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players")) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     List<PlayerDTO> players = new ArrayList<>();
@@ -70,7 +70,7 @@ public class PlayerData extends PluginDataHolder {
     // update join_message by uuid as transaction
     public boolean updateJoinMessage(String uuid, String joinMessage) {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET join_message = ? WHERE uuid = ?")) {
                 preparedStatement.setString(1, joinMessage);
@@ -94,7 +94,7 @@ public class PlayerData extends PluginDataHolder {
     // update leave_message by uuid as transaction
     public boolean updateLeaveMessage(String uuid, String leaveMessage) {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET leave_message = ? WHERE uuid = ?")) {
                 preparedStatement.setString(1, leaveMessage);
@@ -118,7 +118,7 @@ public class PlayerData extends PluginDataHolder {
     // create new player in database as transaction
     public boolean createPlayer(PlayerDTO player) {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, name, skin_url, join_message, leave_message) VALUES (?, ?, ?, ?, ?)")) {
                 preparedStatement.setString(1, player.getUuid());
@@ -145,7 +145,7 @@ public class PlayerData extends PluginDataHolder {
     // update player by uuid as transaction
     public boolean updatePlayer(PlayerDTO player) {
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET name = ?, skin_url = ?, join_message = ?, leave_message = ? WHERE uuid = ?")) {
                 preparedStatement.setString(1, player.getName());

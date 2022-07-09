@@ -9,17 +9,22 @@ import java.util.logging.Level;
 
 public class PluginDataHolder {
 
-    // connector pri
-    private final IDatabaseConnector connector;
+    private final IDatabaseConnector sharedConnector;
+    private final IDatabaseConnector serverConnector;
     private final SomniumLib plugin;
 
-    public PluginDataHolder(IDatabaseConnector connector) {
+    public PluginDataHolder(IDatabaseConnector sharedConnector, IDatabaseConnector serverConnector) {
         plugin = SomniumLib.getInstance();
-        this.connector = connector;
+        this.sharedConnector = sharedConnector;
+        this.serverConnector = serverConnector;
     }
 
-    protected Connection getConnection() throws SQLException {
-        return connector.getConnection();
+    protected Connection getSharedConnection() throws SQLException {
+        return sharedConnector.getConnection();
+    }
+
+    protected Connection getServerConnection() throws SQLException {
+        return serverConnector.getConnection();
     }
 
     protected void logSQLError(String message, SQLException ex) {

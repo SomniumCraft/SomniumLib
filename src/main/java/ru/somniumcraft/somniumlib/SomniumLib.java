@@ -1,18 +1,17 @@
 package ru.somniumcraft.somniumlib;
 
 import lombok.Getter;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
 import ru.somniumcraft.somniumlib.CommandManager.CommandRegister;
+import ru.somniumcraft.somniumlib.Config.ServerDatabaseConfig;
 import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Config.SharedDatabaseConfig;
 import ru.somniumcraft.somniumlib.Database.Caching.PlayerDTOCache;
 import ru.somniumcraft.somniumlib.Database.Connector.IDatabaseConnector;
 import ru.somniumcraft.somniumlib.Database.Connector.MySQLConnector;
-import ru.somniumcraft.somniumlib.Database.Data.SharedDatabase;
-import ru.somniumcraft.somniumlib.Util.*;
+import ru.somniumcraft.somniumlib.Database.Data.ServerDatabaseConfigurator;
+import ru.somniumcraft.somniumlib.Database.Data.SharedDatabaseConfigurator;
+import ru.somniumcraft.somniumlib.Database.Data.Util.DatabaseConfigurator;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -28,7 +27,13 @@ public class SomniumLib extends SomniumPlugin {
     private SharedDatabaseConfig sharedDatabaseConfig;
 
     @Getter
-    private IDatabaseConnector databaseConnector;
+    private ServerDatabaseConfig serverDatabaseConfig;
+
+    @Getter
+    private IDatabaseConnector sharedDatabaseConnector;
+
+    @Getter
+    private IDatabaseConnector serverDatabaseConnector;
 
     @Getter
     private PlayerDTOCache playerDTOCache;
@@ -47,14 +52,22 @@ public class SomniumLib extends SomniumPlugin {
     @Override
     public void Enable() {
 
-        databaseConnector = new MySQLConnector(
+        sharedDatabaseConnector = new MySQLConnector(
                 sharedDatabaseConfig.getHost(),
                 sharedDatabaseConfig.getPort(),
                 sharedDatabaseConfig.getDatabase(),
                 sharedDatabaseConfig.getUser(),
                 sharedDatabaseConfig.getPassword());
 
-        configureSharedDatabase();
+        serverDatabaseConnector = new MySQLConnector(
+                serverDatabaseConfig.getHost(),
+                serverDatabaseConfig.getPort(),
+                serverDatabaseConfig.getDatabase(),
+                serverDatabaseConfig.getUser(),
+                serverDatabaseConfig.getPassword());
+
+        configureDatabase(new SharedDatabaseConfigurator() ,sharedDatabaseConnector);
+        configureDatabase(new ServerDatabaseConfigurator() ,serverDatabaseConnector);
 
         commandRegister = new CommandRegister();
         commandRegister.register();
@@ -67,14 +80,11 @@ public class SomniumLib extends SomniumPlugin {
     public void Disable() {
     }
 
-    private void configureSharedDatabase() {
-        SharedDatabase sharedDatabase = new SharedDatabase();
+    private void configureDatabase(DatabaseConfigurator configurator, IDatabaseConnector connector) {
         try {
-            sharedDatabase.setup(databaseConnector);
-        } catch (SQLException throwables) {
-            this.getLogger().log(Level.SEVERE, "Error while configuring shared database", throwables);
-        } catch (IOException exception) {
-            this.getLogger().log(Level.SEVERE, "Error while configuring shared database", exception);
+            configurator.setup(connector);
+        } catch (SQLException | IOException throwables) {
+            this.getLogger().log(Level.SEVERE, "Error while configuring database " + configurator.getClass().getName(), throwables);
         }
     }
 }
