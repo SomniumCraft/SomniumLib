@@ -19,7 +19,8 @@ public class SomniumLibCommand {
                         .withPermission("somniumlib.admin")
                         .executes(((sender, args) -> {
                             somniumlib.getConfigManager().Reload();
-                            MessageUtils.sendChatMessage(somniumlib.getSharedConfig().getReload(), sender);
+                            MessageUtils.sendChatMessage(somniumlib.getSharedConfig().getReload()
+                                    .replace("{pluginName}", SomniumLib.getInstance().getName()), sender);
                         }))
                 )
                 .executes(((sender, args) -> {

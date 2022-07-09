@@ -11,14 +11,14 @@ ALTER TABLE `ips` ADD INDEX `IDX_ip_player_uuid` (ip, player_uuid);
 CREATE TABLE IF NOT EXISTS `warn_types` (
 `id` INT NOT NULL AUTO_INCREMENT,
 `name` varchar(36) NOT NULL,
-`description` TEXT NOT NULL,
+`description` TEXT,
 PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `warns`(
 `id` INT NOT NULL AUTO_INCREMENT,
 `reason` TEXT NOT NULL,
 `issued_by` varchar(36) NOT NULL,
-`duration` bigint NOT NULL,
+`duration` bigint,
 `issued_date` datetime NOT NULL,
 `player_uuid` varchar(36) NOT NULL,
 `warn_type_id` INT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `recommended_punishment` (
 `warn_threshold` INT NOT NULL,
 `warn_type_id` INT NOT NULL,
 `message` varchar(255) NOT NULL,
-`commands` TEXT NOT NULL,
+`commands` TEXT,
 FOREIGN KEY (`warn_type_id`) REFERENCES `warn_types`(`id`) ON DELETE CASCADE,
 PRIMARY KEY (`warn_threshold`, `warn_type_id`));
 

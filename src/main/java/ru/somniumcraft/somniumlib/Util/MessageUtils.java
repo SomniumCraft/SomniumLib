@@ -2,9 +2,11 @@ package ru.somniumcraft.somniumlib.Util;
 
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,10 +21,10 @@ import java.util.regex.Pattern;
 @UtilityClass
 public class MessageUtils {
 
-    private  final char COLOR_CHAR = '\u00A7';
-    private  final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
+    private final char COLOR_CHAR = '\u00A7';
+    private final Pattern COLOR_PATTERN = Pattern.compile("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})|\\{#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\}|§(.)|&(.)");
 
-    public  Component translateColorCodes(String message)
+    public Component translateColorCodes(String message)
     {
         final Pattern hexPattern = Pattern.compile("\\{#([A-Fa-f0-9]{6})\\}" );
         Matcher matcher = hexPattern.matcher(message);
@@ -39,7 +41,7 @@ public class MessageUtils {
         return LegacyComponentSerializer.legacySection().deserialize(ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString()));
     }
 
-    public  String removeColorCodes(String message) {
+    public String removeColorCodes(String message) {
         Matcher matcher = COLOR_PATTERN.matcher(message);
         if(matcher.find()) {
             message = matcher.replaceAll("");
@@ -47,50 +49,79 @@ public class MessageUtils {
         return message;
     }
 
-    public  void sendChatMessage(String message, CommandSender... senders) {
+    public void sendChatMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public  void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
+    public void sendChatMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendChatMessage(component, senders);
     }
 
-    public  void sendChatMessage(Component component, CommandSender... senders) {
+    public void sendChatMessage(Component component, CommandSender... senders) {
         sendChatMessage(component, Arrays.asList(senders));
     }
 
-    public  void sendChatMessage(Component component, Collection<? extends CommandSender> senders) {
+    public void sendChatMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             sender.sendMessage(component);
         }
     }
 
-    // send message to all players in 100 radius from player using massage builder
-    public  void sendMessageToNearbyPlayers(Player player, Component component, int radius) {
-        for (Player nearbyPlayer: player.getWorld().getPlayers()) {
-            if (nearbyPlayer.getLocation().distance(player.getLocation()) <= radius) {
-                nearbyPlayer.sendMessage(component);
+    public void sendMessageToNearbyPlayers(Component message, Location location, int radius) {
+        for (Player nearbyPlayer: location.getWorld().getPlayers()) {
+            if (nearbyPlayer.getLocation().distance(location) <= radius) {
+                sendChatMessage(message, nearbyPlayer);
             }
         }
     }
 
-    public  void sendActionBarMessage(String message, CommandSender... senders) {
+    public void sendMessageToNearbyPlayers(Component message, Location location, int radius, Component spyMessage, String spyPermission) {
+        Collection<Player> nearbyPlayers = location.getNearbyPlayers(radius);
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (nearbyPlayers.contains(online)) {
+                sendChatMessage(message, online);
+            } else if (online.hasPermission(spyPermission)) {
+                sendChatMessage(spyMessage, online);
+            }
+        }
+    }
+
+    public void sendMessageToNearbyPlayers(String message, Location location, int radius) {
+        Component componentMessage = translateColorCodes(message);
+        sendMessageToNearbyPlayers(componentMessage, location, radius);
+    }
+
+    public void sendMessageToNearbyPlayers(String message, Location location, int radius, String spyMessage, String spyPermission) {
+        Component componentMessage = translateColorCodes(message);
+        Component componentSpyMessage = translateColorCodes(spyMessage);
+        sendMessageToNearbyPlayers(componentMessage, location, radius, componentSpyMessage, spyPermission);
+    }
+
+    // TODO: поправить под компоненты
+    public void sendBroadcastMessage(String message) {
+        Component component = translateColorCodes(SomniumLib.getInstance().getSharedConfig().getBroadcastMessage()
+                .replace("{prefix}", SomniumLib.getInstance().getSharedConfig().getServerNamePrefix())
+                .replace("{message}", message));
+        sendChatMessage(component, Bukkit.getOnlinePlayers());
+    }
+
+    public void sendActionBarMessage(String message, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
-    public  void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
+    public void sendActionBarMessage(String message, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendActionBarMessage(component, senders);
     }
 
-    public  void sendActionBarMessage(Component component, CommandSender... senders) {
+    public void sendActionBarMessage(Component component, CommandSender... senders) {
         sendActionBarMessage(component,Arrays.asList(senders));
     }
 
-    public  void sendActionBarMessage(Component component, Collection<? extends CommandSender> senders) {
+    public void sendActionBarMessage(Component component, Collection<? extends CommandSender> senders) {
         for (CommandSender sender: senders) {
             if (sender instanceof Player) {
                 sender.sendActionBar(component);
@@ -98,21 +129,21 @@ public class MessageUtils {
         }
     }
 
-    public  void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
+    public void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public  void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
+    public void sendBossBarMessage(String message, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         Component component = translateColorCodes(message);
         sendBossBarMessage(component, color, overlay, duration, senders);
     }
 
-    public  void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
+    public void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, CommandSender... senders) {
         sendBossBarMessage(component, color, overlay, duration, Arrays.asList(senders));
     }
 
-    public  void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
+    public void sendBossBarMessage(Component component, BossBar.Color color, BossBar.Overlay overlay, Long duration, Collection<? extends CommandSender> senders) {
         BossBar bossBar = BossBar.bossBar(component, 1, color, overlay);
 
         for (CommandSender sender: senders) {
@@ -138,7 +169,7 @@ public class MessageUtils {
         }
     }
 
-    public  String getFormattedTime(long milliseconds)
+    public String getFormattedTime(long milliseconds)
     {
         String time = "";
 

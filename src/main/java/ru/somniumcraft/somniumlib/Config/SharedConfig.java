@@ -5,7 +5,7 @@ import lombok.Getter;
 @SomniumConfig
 public class SharedConfig {
     @Getter
-    private String reload = "&f[{#77add6}SomniumRTP&f] Плагин успешно перезагружен";
+    private String reload = "&f[{#77add6}{pluginName}&f] Плагин успешно перезагружен";
     @Getter
     private String noPermissions = "{#f9f871}Ошибка! &fУ вас недостаточно прав для использования данной команды.";
     @Getter
@@ -24,4 +24,10 @@ public class SharedConfig {
     private String localChatPrefix = "&f[&7L&f]";
     @Getter
     private String spyChatPrefix = "&f[{#bf1f4c}☄&f]";
+    @Getter
+    private String serverNamePrefix = "&f[{primaryColor}SomniumCraft&f]";
+    @Getter
+    private String shortServerNamePrefix = "&f[{primaryColor}SC&f]";
+    @Getter
+    private String broadcastMessage = "{serverNamePrefix} &f{message}";
 }

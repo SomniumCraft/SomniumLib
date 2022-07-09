@@ -1,13 +1,13 @@
 package ru.somniumcraft.somniumlib.Database.Caching;
 
-import ru.somniumcraft.somniumlib.Database.Data.AsyncWrappedPlayerData;
-import ru.somniumcraft.somniumlib.Database.Data.Objects.PlayerDTO;
+import ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase.AsyncWrappedPlayerData;
+import ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase.SharedPlayerDTO;
 
 import java.util.HashMap;
 
 public class PlayerDTOCache {
 
-    private HashMap<String, PlayerDTO> cache = new HashMap<>();
+    private HashMap<String, SharedPlayerDTO> cache = new HashMap<>();
 
     private HashMap<String, Long> cacheTimestamp = new HashMap<>();
 
@@ -33,7 +33,7 @@ public class PlayerDTOCache {
         });
     }
 
-    public PlayerDTO getPlayer(String uuid) {
+    public SharedPlayerDTO getPlayer(String uuid) {
         if (cache.containsKey(uuid)) {
             if (System.currentTimeMillis() - cacheTimestamp.get(uuid) > cacheLifeTime) {
                 playerData.getPlayer(uuid).queue(player -> {
@@ -58,37 +58,37 @@ public class PlayerDTOCache {
         return cache.containsKey(uuid);
     }
 
-    public void createPlayer(PlayerDTO player) {
+    public void createPlayer(SharedPlayerDTO player) {
         cache.put(player.getUuid(), player);
         cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
         playerData.createPlayer(player).queue();
     }
 
-    public void updatePlayer(PlayerDTO player){
+    public void updatePlayer(SharedPlayerDTO player){
         cache.put(player.getUuid(), player);
         cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
         playerData.updatePlayer(player).queue();
     }
 
     public void updateBasicPlayerData(String uuid, String name, String skinUrl){
-        PlayerDTO oldData = cache.get(uuid);
-        PlayerDTO newData = new PlayerDTO(uuid, name, skinUrl, oldData.getJoinMessage(), oldData.getLeaveMessage());
+        SharedPlayerDTO oldData = cache.get(uuid);
+        SharedPlayerDTO newData = new SharedPlayerDTO(uuid, name, skinUrl, oldData.getJoinMessage(), oldData.getLeaveMessage());
         cache.put(uuid, newData);
         cacheTimestamp.put(uuid, System.currentTimeMillis());
         playerData.updatePlayer(newData).queue();
     }
 
     public void updateJoinMessage(String uuid, String message){
-        PlayerDTO oldData = cache.get(uuid);
-        PlayerDTO newData = new PlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), message, oldData.getLeaveMessage());
+        SharedPlayerDTO oldData = cache.get(uuid);
+        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), message, oldData.getLeaveMessage());
         cache.put(uuid, newData);
         cacheTimestamp.put(uuid, System.currentTimeMillis());
         playerData.updateJoinMessage(uuid, message).queue();
     }
 
     public void updateLeaveMessage(String uuid, String message){
-        PlayerDTO oldData = cache.get(uuid);
-        PlayerDTO newData = new PlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), oldData.getJoinMessage(), message);
+        SharedPlayerDTO oldData = cache.get(uuid);
+        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), oldData.getJoinMessage(), message);
         cache.put(uuid, newData);
         cacheTimestamp.put(uuid, System.currentTimeMillis());
         playerData.updateLeaveMessage(uuid, message).queue();

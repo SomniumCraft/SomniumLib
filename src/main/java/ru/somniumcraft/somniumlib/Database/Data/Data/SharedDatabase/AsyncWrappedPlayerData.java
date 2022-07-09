@@ -1,8 +1,7 @@
-package ru.somniumcraft.somniumlib.Database.Data;
+package ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase;
 
-import org.bukkit.entity.Player;
 import ru.somniumcraft.somniumlib.Database.Data.Async.BukkitAsyncAction;
-import ru.somniumcraft.somniumlib.Database.Data.Objects.PlayerDTO;
+import ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase.SharedPlayerDTO;
 import ru.somniumcraft.somniumlib.SomniumLib;
 
 import java.util.List;
@@ -18,19 +17,19 @@ public class AsyncWrappedPlayerData {
         delegate = new PlayerData();
     }
 
-    public BukkitAsyncAction<Optional<List<PlayerDTO>>> getPlayers() {
+    public BukkitAsyncAction<Optional<List<SharedPlayerDTO>>> getPlayers() {
         return BukkitAsyncAction.supplyAsync(plugin, () -> delegate.getPlayers());
     }
 
-    public BukkitAsyncAction<Optional<PlayerDTO>> getPlayer(String uuid) {
+    public BukkitAsyncAction<Optional<SharedPlayerDTO>> getPlayer(String uuid) {
         return BukkitAsyncAction.supplyAsync(plugin, () -> delegate.getPlayer(uuid));
     }
 
-    public BukkitAsyncAction<Boolean> updatePlayer(PlayerDTO player) {
+    public BukkitAsyncAction<Boolean> updatePlayer(SharedPlayerDTO player) {
         return BukkitAsyncAction.supplyAsync(plugin, () -> delegate.updatePlayer(player));
     }
 
-    public BukkitAsyncAction<Boolean> createPlayer(PlayerDTO player) {
+    public BukkitAsyncAction<Boolean> createPlayer(SharedPlayerDTO player) {
         return BukkitAsyncAction.supplyAsync(plugin, () -> delegate.createPlayer(player));
     }
 

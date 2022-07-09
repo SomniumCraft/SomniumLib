@@ -1,6 +1,6 @@
-package ru.somniumcraft.somniumlib.Database.Data;
+package ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase;
 
-import ru.somniumcraft.somniumlib.Database.Data.Objects.PlayerDTO;
+import ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase.SharedPlayerDTO;
 import ru.somniumcraft.somniumlib.Database.Data.Util.PluginDataHolder;
 import ru.somniumcraft.somniumlib.SomniumLib;
 
@@ -15,14 +15,14 @@ public class PlayerData extends PluginDataHolder {
         super(SomniumLib.getInstance().getSharedDatabaseConnector(), SomniumLib.getInstance().getServerDatabaseConnector());
     }
 
-    public Optional<PlayerDTO> getPlayer(String uuid) {
+    public Optional<SharedPlayerDTO> getPlayer(String uuid) {
 
         try (Connection connection = getSharedConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?")) {
                 preparedStatement.setString(1, uuid);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        return Optional.of(new PlayerDTO(
+                        return Optional.of(new SharedPlayerDTO(
                                 resultSet.getString("uuid"),
                                 resultSet.getString("name"),
                                 resultSet.getString("skin_url"),
@@ -42,14 +42,14 @@ public class PlayerData extends PluginDataHolder {
     }
 
     // get optional list of all players from database
-    public Optional<List<PlayerDTO>> getPlayers() {
+    public Optional<List<SharedPlayerDTO>> getPlayers() {
 
         try (Connection connection = getSharedConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players")) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    List<PlayerDTO> players = new ArrayList<>();
+                    List<SharedPlayerDTO> players = new ArrayList<>();
                     while (resultSet.next()) {
-                        players.add(new PlayerDTO(
+                        players.add(new SharedPlayerDTO(
                                 resultSet.getString("uuid"),
                                 resultSet.getString("name"),
                                 resultSet.getString("skin_url"),
@@ -116,7 +116,7 @@ public class PlayerData extends PluginDataHolder {
     }
 
     // create new player in database as transaction
-    public boolean createPlayer(PlayerDTO player) {
+    public boolean createPlayer(SharedPlayerDTO player) {
 
         try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
@@ -143,7 +143,7 @@ public class PlayerData extends PluginDataHolder {
     }
 
     // update player by uuid as transaction
-    public boolean updatePlayer(PlayerDTO player) {
+    public boolean updatePlayer(SharedPlayerDTO player) {
 
         try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
