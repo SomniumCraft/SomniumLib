@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `players` (
 `uuid` varchar(36) NOT NULL,
-`display_name` varchar(16) NOT NULL,
+`display_name` varchar(100),
 `death_location_world` varchar(100),
 `death_location_x` float,
 `death_location_y` float,
@@ -41,7 +41,7 @@ PRIMARY KEY (`uuid`));
 CREATE TABLE IF NOT EXISTS `kits` (
 `id` INT NOT NULL AUTO_INCREMENT,
 `name` VARCHAR(36) NOT NULL,
-`description` TEXT NOT NULL,
+`description` TEXT,
 `item_icon` TINYTEXT NOT NULL,
 `cooldown` BIGINT,
 `max_use_times` INT,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `kits` (
 `activation_commands` TEXT NOT NULL,
 `is_active` tinyint(1) NOT NULL,
 `is_default` tinyint(1) NOT NULL,
-`items` MEDIUMTEXT  NOT NULL,
+`items` MEDIUMTEXT NOT NULL,
 `permission` VARCHAR(255),
 PRIMARY KEY (`id`)
 );
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `warps` (
 `name` VARCHAR(36) NOT NULL,
 `item_icon` TINYTEXT NOT NULL,
 `creator_uuid` VARCHAR(36) NOT NULL,
-`description` TEXT NOT NULL,
+`description` TEXT,
 `location_world` VARCHAR(100) NOT NULL,
 `location_x` FLOAT NOT NULL,
 `location_y` FLOAT NOT NULL,
