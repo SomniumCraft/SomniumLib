@@ -2,7 +2,10 @@ package ru.somniumcraft.somniumlib.Database.Data.Objects.ServerDatabase;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class KitsDTO {
 
@@ -28,7 +31,7 @@ public class KitsDTO {
     private String permission;
 
     @Getter @Setter @NotNull
-    private String[] items;
+    private List<ItemStack> items;
 
     @Getter @Setter @NotNull
     private boolean isDefault;
@@ -45,7 +48,7 @@ public class KitsDTO {
     @Getter @Setter @NotNull
     private String activationCommand;
 
-    public KitsDTO(int id, String name, String description, String itemIcon, int price, int cooldown, String permission, String[] items, boolean isDefault, boolean isActive, int experienceCost, int maxUseTimes, String activationCommand) {
+    public KitsDTO(int id, String name, String description, String itemIcon, int price, int cooldown, String permission, List<ItemStack> items, boolean isDefault, boolean isActive, int experienceCost, int maxUseTimes, String activationCommand) {
         this.id = id;
         this.name = name;
         this.description = description;

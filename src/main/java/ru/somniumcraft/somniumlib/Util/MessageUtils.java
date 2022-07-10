@@ -69,36 +69,6 @@ public class MessageUtils {
         }
     }
 
-    public void sendMessageToNearbyPlayers(Component message, Location location, int radius) {
-        for (Player nearbyPlayer: location.getWorld().getPlayers()) {
-            if (nearbyPlayer.getLocation().distance(location) <= radius) {
-                sendChatMessage(message, nearbyPlayer);
-            }
-        }
-    }
-
-    public void sendMessageToNearbyPlayers(Component message, Location location, int radius, Component spyMessage, String spyPermission) {
-        Collection<Player> nearbyPlayers = location.getNearbyPlayers(radius);
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            if (nearbyPlayers.contains(online)) {
-                sendChatMessage(message, online);
-            } else if (online.hasPermission(spyPermission)) {
-                sendChatMessage(spyMessage, online);
-            }
-        }
-    }
-
-    public void sendMessageToNearbyPlayers(String message, Location location, int radius) {
-        Component componentMessage = translateColorCodes(message);
-        sendMessageToNearbyPlayers(componentMessage, location, radius);
-    }
-
-    public void sendMessageToNearbyPlayers(String message, Location location, int radius, String spyMessage, String spyPermission) {
-        Component componentMessage = translateColorCodes(message);
-        Component componentSpyMessage = translateColorCodes(spyMessage);
-        sendMessageToNearbyPlayers(componentMessage, location, radius, componentSpyMessage, spyPermission);
-    }
-
     // TODO: поправить под компоненты
     public void sendBroadcastMessage(String message) {
         Component component = translateColorCodes(SomniumLib.getInstance().getSharedConfig().getBroadcastMessage()

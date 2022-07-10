@@ -6,7 +6,7 @@ import ru.somniumcraft.somniumlib.CommandManager.CommandRegister;
 import ru.somniumcraft.somniumlib.Config.ServerDatabaseConfig;
 import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Config.SharedDatabaseConfig;
-import ru.somniumcraft.somniumlib.Database.Caching.PlayerDTOCache;
+import ru.somniumcraft.somniumlib.Database.Caching.SharedPlayerDTOCache;
 import ru.somniumcraft.somniumlib.Database.Connector.IDatabaseConnector;
 import ru.somniumcraft.somniumlib.Database.Connector.MySQLConnector;
 import ru.somniumcraft.somniumlib.Database.Data.ServerDatabaseConfigurator;
@@ -36,7 +36,7 @@ public class SomniumLib extends SomniumPlugin {
     private IDatabaseConnector serverDatabaseConnector;
 
     @Getter
-    private PlayerDTOCache playerDTOCache;
+    private SharedPlayerDTOCache playerDTOCache;
 
     private CommandRegister commandRegister;
 
@@ -72,7 +72,7 @@ public class SomniumLib extends SomniumPlugin {
         commandRegister = new CommandRegister();
         commandRegister.register();
 
-        playerDTOCache = new PlayerDTOCache();
+        playerDTOCache = new SharedPlayerDTOCache();
         playerDTOCache.loadData();
     }
 

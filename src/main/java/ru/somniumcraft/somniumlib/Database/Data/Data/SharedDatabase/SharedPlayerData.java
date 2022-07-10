@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PlayerData extends PluginDataHolder {
+public class SharedPlayerData extends PluginDataHolder {
 
-    public PlayerData() {
+    public SharedPlayerData() {
         super(SomniumLib.getInstance().getSharedDatabaseConnector(), SomniumLib.getInstance().getServerDatabaseConnector());
     }
 

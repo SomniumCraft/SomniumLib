@@ -3,6 +3,7 @@ package ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import ru.somniumcraft.somniumlib.Database.Data.Objects.Types.PunishmentType;
 
 public class SharedPunishmentsDTO {
 
@@ -10,7 +11,7 @@ public class SharedPunishmentsDTO {
     private int id;
 
     @Getter @Setter @NotNull
-    private String punishmentType;
+    private PunishmentType punishmentType;
 
     @Getter @Setter @NotNull
     private String playerUUID;
@@ -30,7 +31,7 @@ public class SharedPunishmentsDTO {
     @Getter @Setter
     private long remainingTime;
 
-    public SharedPunishmentsDTO(int id, String punishmentType, String playerUUID, String issuedByUUID, String reason, long issuedDate, long duration, long remainingTime) {
+    public SharedPunishmentsDTO(int id, PunishmentType punishmentType, String playerUUID, String issuedByUUID, String reason, long issuedDate, long duration, long remainingTime) {
         this.id = id;
         this.punishmentType = punishmentType;
         this.playerUUID = playerUUID;

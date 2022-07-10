@@ -1,11 +1,11 @@
 package ru.somniumcraft.somniumlib.Database.Caching;
 
-import ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase.AsyncWrappedPlayerData;
+import ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase.AsyncWrappedSharedPlayerData;
 import ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase.SharedPlayerDTO;
 
 import java.util.HashMap;
 
-public class PlayerDTOCache {
+public class SharedPlayerDTOCache {
 
     private HashMap<String, SharedPlayerDTO> cache = new HashMap<>();
 
@@ -13,10 +13,10 @@ public class PlayerDTOCache {
 
     private  long cacheLifeTime = 5 * 60 * 1000;
 
-    private AsyncWrappedPlayerData playerData;
+    private AsyncWrappedSharedPlayerData playerData;
 
-    public PlayerDTOCache() {
-        this.playerData = new AsyncWrappedPlayerData();
+    public SharedPlayerDTOCache() {
+        this.playerData = new AsyncWrappedSharedPlayerData();
     }
 
     // public load data

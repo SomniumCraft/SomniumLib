@@ -82,19 +82,19 @@ FOREIGN KEY (`creator_uuid`) REFERENCES `players`(`uuid`) ON DELETE CASCADE,
 PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `deaths` (
+CREATE TABLE IF NOT EXISTS `inventories` (
 `id` INT NOT NULL AUTO_INCREMENT,
 `player_uuid` VARCHAR(36) NOT NULL,
 `killer_uuid` VARCHAR(36),
 `timestamp` datetime NOT NULL,
-`death_reason` VARCHAR(255) NOT NULL,
+`death_reason` VARCHAR(255),
 `experience` INT NOT NULL,
 `health` FLOAT NOT NULL,
 `hunger` FLOAT NOT NULL,
 `saturation` FLOAT NOT NULL,
 `potion_effects` MEDIUMTEXT NOT NULL,
 `inventory` MEDIUMTEXT NOT NULL,
-`keep_inventory` tinyint(1) NOT NULL,
+`keep_inventory` tinyint(1),
 FOREIGN KEY (`player_uuid`) REFERENCES `players`(`uuid`) ON DELETE CASCADE,
 FOREIGN KEY (`killer_uuid`) REFERENCES `players`(`uuid`) ON DELETE CASCADE,
 PRIMARY KEY (`id`)
@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `homes` (
 `location_yaw` FLOAT NOT NULL,
 `location_pitch` FLOAT NOT NULL,
 FOREIGN KEY (`player_uuid`) REFERENCES `players`(`uuid`) ON DELETE CASCADE,
+CONSTRAINT `homes_unique` UNIQUE (`player_uuid`, `name`),
 PRIMARY KEY (`id`)
 );
 

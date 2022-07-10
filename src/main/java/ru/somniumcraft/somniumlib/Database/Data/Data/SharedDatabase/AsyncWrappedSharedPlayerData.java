@@ -7,14 +7,14 @@ import ru.somniumcraft.somniumlib.SomniumLib;
 import java.util.List;
 import java.util.Optional;
 
-public class AsyncWrappedPlayerData {
+public class AsyncWrappedSharedPlayerData {
 
-    private final PlayerData delegate;
+    private final SharedPlayerData delegate;
     private final SomniumLib plugin;
 
-    public AsyncWrappedPlayerData() {
+    public AsyncWrappedSharedPlayerData() {
         plugin = SomniumLib.getInstance();
-        delegate = new PlayerData();
+        delegate = new SharedPlayerData();
     }
 
     public BukkitAsyncAction<Optional<List<SharedPlayerDTO>>> getPlayers() {
