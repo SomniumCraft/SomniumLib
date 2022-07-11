@@ -25,8 +25,8 @@ public class SharedPlayerDTOCache {
 
             if (players.isPresent()) {
                 players.get().forEach(player -> {
-                    cache.put(player.getUuid(), player);
-                    cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
+                    cache.put(player.getUUID(), player);
+                    cacheTimestamp.put(player.getUUID(), System.currentTimeMillis());
                 });
             }
 
@@ -38,8 +38,8 @@ public class SharedPlayerDTOCache {
             if (System.currentTimeMillis() - cacheTimestamp.get(uuid) > cacheLifeTime) {
                 playerData.getPlayer(uuid).queue(player -> {
                     if (player.isPresent()) {
-                        cache.put(player.get().getUuid(), player.get());
-                        cacheTimestamp.put(player.get().getUuid(), System.currentTimeMillis());
+                        cache.put(player.get().getUUID(), player.get());
+                        cacheTimestamp.put(player.get().getUUID(), System.currentTimeMillis());
                     }
                 });
             }
@@ -47,8 +47,8 @@ public class SharedPlayerDTOCache {
         }
         playerData.getPlayer(uuid).queue(player -> {
             if (player.isPresent()) {
-                cache.put(player.get().getUuid(), player.get());
-                cacheTimestamp.put(player.get().getUuid(), System.currentTimeMillis());
+                cache.put(player.get().getUUID(), player.get());
+                cacheTimestamp.put(player.get().getUUID(), System.currentTimeMillis());
             }
         });
         return null;
@@ -59,14 +59,14 @@ public class SharedPlayerDTOCache {
     }
 
     public void createPlayer(SharedPlayerDTO player) {
-        cache.put(player.getUuid(), player);
-        cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
+        cache.put(player.getUUID(), player);
+        cacheTimestamp.put(player.getUUID(), System.currentTimeMillis());
         playerData.createPlayer(player).queue();
     }
 
     public void updatePlayer(SharedPlayerDTO player){
-        cache.put(player.getUuid(), player);
-        cacheTimestamp.put(player.getUuid(), System.currentTimeMillis());
+        cache.put(player.getUUID(), player);
+        cacheTimestamp.put(player.getUUID(), System.currentTimeMillis());
         playerData.updatePlayer(player).queue();
     }
 
@@ -80,7 +80,7 @@ public class SharedPlayerDTOCache {
 
     public void updateJoinMessage(String uuid, String message){
         SharedPlayerDTO oldData = cache.get(uuid);
-        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), message, oldData.getLeaveMessage());
+        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUUID(), oldData.getName(), oldData.getSkinUrl(), message, oldData.getLeaveMessage());
         cache.put(uuid, newData);
         cacheTimestamp.put(uuid, System.currentTimeMillis());
         playerData.updateJoinMessage(uuid, message).queue();
@@ -88,7 +88,7 @@ public class SharedPlayerDTOCache {
 
     public void updateLeaveMessage(String uuid, String message){
         SharedPlayerDTO oldData = cache.get(uuid);
-        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUuid(), oldData.getName(), oldData.getSkinUrl(), oldData.getJoinMessage(), message);
+        SharedPlayerDTO newData = new SharedPlayerDTO(oldData.getUUID(), oldData.getName(), oldData.getSkinUrl(), oldData.getJoinMessage(), message);
         cache.put(uuid, newData);
         cacheTimestamp.put(uuid, System.currentTimeMillis());
         playerData.updateLeaveMessage(uuid, message).queue();

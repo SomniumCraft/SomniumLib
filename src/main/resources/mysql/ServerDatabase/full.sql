@@ -40,7 +40,7 @@ PRIMARY KEY (`uuid`));
 
 CREATE TABLE IF NOT EXISTS `kits` (
 `id` INT NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(36) NOT NULL,
+`name` VARCHAR(36) NOT NULL UNIQUE,
 `description` TEXT,
 `item_icon` TINYTEXT NOT NULL,
 `cooldown` BIGINT,
@@ -67,7 +67,7 @@ PRIMARY KEY (`player_uuid`, `kit_id`)
 
 CREATE TABLE IF NOT EXISTS `warps` (
 `id` INT NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(36) NOT NULL,
+`name` VARCHAR(36) NOT NULL UNIQUE,
 `item_icon` TINYTEXT NOT NULL,
 `creator_uuid` VARCHAR(36) NOT NULL,
 `description` TEXT,

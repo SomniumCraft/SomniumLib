@@ -93,7 +93,7 @@ public class HomesData extends PluginDataHolder {
             try (Connection connection = getServerConnection()) {
                 connection.setAutoCommit(false);
                 try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO homes (uuid, name, location_world, location_x, location_y, location_z, location_yaw, location_pitch, item_icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                    preparedStatement.setString(1, home.getUuid());
+                    preparedStatement.setString(1, home.getPlayerUUID());
                     preparedStatement.setString(2, home.getName());
                     preparedStatement.setString(3, home.getLocation().getWorld().getName());
                     preparedStatement.setFloat(4, (float) home.getLocation().getX());

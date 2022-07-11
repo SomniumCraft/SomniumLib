@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class PlayerDTO {
 
     @Getter @Setter @NotNull
-    private String uuid;
+    private String UUID;
 
     @Getter @Setter @NotNull
     private String displayName;
@@ -77,7 +77,7 @@ public class PlayerDTO {
 
 
     public PlayerDTO(@NotNull String uuid, @NotNull String displayName, long deathTimestamp, long logoutTimestamp, long loginTimestamp, long teleportTimestamp, long playtime, BigDecimal balance, long flytime, long lastTimeAdded, long lastKeepInventory, Location deathLocation, Location logoutLocation, Location teleportLocation, double bookEnchantedWithoutMending, double woodenEnchantedWithoutMending, double stoneEnchantedWithoutMending, double ironEnchantedWithoutMending, double goldEnchantedWithoutMending, double diamondEnchantedWithoutMending, double netheriteEnchantedWithoutMending, double marineEnchantedWithoutMending) {
-        this.uuid = uuid;
+        this.UUID = uuid;
         this.displayName = displayName;
         this.deathTimestamp = deathTimestamp;
         this.logoutTimestamp = logoutTimestamp;

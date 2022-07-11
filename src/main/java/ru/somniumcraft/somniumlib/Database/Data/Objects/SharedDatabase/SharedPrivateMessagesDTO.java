@@ -2,6 +2,7 @@ package ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 public class SharedPrivateMessagesDTO {

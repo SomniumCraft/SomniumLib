@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class SharedPlayerDTO {
 
     @Getter @Setter @NotNull
-    private String uuid;
+    private String UUID;
 
     @Getter @Setter @NotNull
     private String name;
@@ -22,7 +22,7 @@ public class SharedPlayerDTO {
     private String leaveMessage;
 
     public SharedPlayerDTO(@NotNull String uuid, @NotNull String name, @NotNull String skinUrl, String joinMessage, String leaveMessage) {
-        this.uuid = uuid;
+        this.UUID = uuid;
         this.name = name;
         this.skinUrl = skinUrl;
         this.joinMessage = joinMessage;

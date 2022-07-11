@@ -11,7 +11,7 @@ public class HomesDTO {
     private int id;
 
     @Getter @Setter @NotNull
-    private String uuid;
+    private String playerUUID;
 
     @Getter @Setter @NotNull
     private String name;
@@ -24,7 +24,7 @@ public class HomesDTO {
 
     public HomesDTO(int id, String uuid, String name, Location location, String itemIcon) {
         this.id = id;
-        this.uuid = uuid;
+        this.playerUUID = uuid;
         this.name = name;
         this.location = location;
         this.itemIcon = itemIcon;

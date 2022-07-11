@@ -181,7 +181,7 @@ public class PlayerData extends PluginDataHolder {
                     "netherite_enchanted_without_mending, " +
                     "marine_enchanted_without_mending" +
                     ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                preparedStatement.setString(1, playerDTO.getUuid());
+                preparedStatement.setString(1, playerDTO.getUUID());
                 preparedStatement.setString(2, playerDTO.getDisplayName());
                 preparedStatement.setLong(3, playerDTO.getDeathTimestamp());
                 preparedStatement.setLong(4, playerDTO.getLogoutTimestamp());
@@ -276,7 +276,7 @@ public class PlayerData extends PluginDataHolder {
                     "netherite_enchanted_without_mending = ?, " +
                     "marine_enchanted_without_mending = ? " +
                     "WHERE uuid = ?")) {
-                preparedStatement.setString(1, playerDTO.getUuid());
+                preparedStatement.setString(1, playerDTO.getUUID());
                 preparedStatement.setString(2, playerDTO.getDisplayName());
                 preparedStatement.setLong(3, playerDTO.getDeathTimestamp());
                 preparedStatement.setLong(4, playerDTO.getLogoutTimestamp());

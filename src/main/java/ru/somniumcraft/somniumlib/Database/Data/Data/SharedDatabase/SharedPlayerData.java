@@ -121,7 +121,7 @@ public class SharedPlayerData extends PluginDataHolder {
         try (Connection connection = getSharedConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO players (uuid, name, skin_url, join_message, leave_message) VALUES (?, ?, ?, ?, ?)")) {
-                preparedStatement.setString(1, player.getUuid());
+                preparedStatement.setString(1, player.getUUID());
                 preparedStatement.setString(2, player.getName());
                 preparedStatement.setString(3, player.getSkinUrl());
                 preparedStatement.setString(4, player.getJoinMessage());
@@ -152,7 +152,7 @@ public class SharedPlayerData extends PluginDataHolder {
                 preparedStatement.setString(2, player.getSkinUrl());
                 preparedStatement.setString(3, player.getJoinMessage());
                 preparedStatement.setString(4, player.getLeaveMessage());
-                preparedStatement.setString(5, player.getUuid());
+                preparedStatement.setString(5, player.getUUID());
                 preparedStatement.executeUpdate();
                 connection.commit();
                 connection.setAutoCommit(true);

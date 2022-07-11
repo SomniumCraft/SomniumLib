@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerKitsDTO {
 
     @Getter @Setter @NotNull
-    private String uuid;
+    private String playerUUID;
 
     @Getter @Setter @NotNull
     private int kitId;
@@ -19,7 +19,7 @@ public class PlayerKitsDTO {
     private int lastUseTimestamp;
 
     public PlayerKitsDTO(@NotNull String uuid, int kitId, int usedTimes, int lastUseTimestamp) {
-        this.uuid = uuid;
+        this.playerUUID = uuid;
         this.kitId = kitId;
         this.usedTimes = usedTimes;
         this.lastUseTimestamp = lastUseTimestamp;
