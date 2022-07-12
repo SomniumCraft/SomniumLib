@@ -1,4 +1,4 @@
-package ru.somniumcraft.somniumlib.Database.Data.Data;
+package ru.somniumcraft.somniumlib.Database.Data.Util;
 
 import com.google.gson.Gson;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SusUtils {
+
+    // TODO: Переименовать
 
     private static final Gson gson = new Gson();
 

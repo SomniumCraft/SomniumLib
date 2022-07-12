@@ -19,11 +19,11 @@
                     <table>
                         <tableClass>
                             <transform>PASCAL</transform>
-                            <expression>Server_$0</expression>
+                            <expression>Server_$0_Table</expression>
                         </tableClass>
                         <recordClass>
                             <transform>PASCAL</transform>
-                            <expression>Server_$0</expression>
+                            <expression>Server_$0_Record</expression>
                         </recordClass>
                     </table>
                 </tables>
@@ -31,8 +31,8 @@
         </strategy>
 
         <target>
-            <packageName>org.jooq.codegen.maven.example</packageName>
-            <directory>target/generated-sources/jooq/server</directory>
+            <packageName>ServerDatabase</packageName>
+            <directory>src/main/java/ru/somniumcraft/somniumlib/Database/Data</directory>
         </target>
     </generator>
 </configuration>

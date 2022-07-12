@@ -109,12 +109,12 @@
                                 <password></password>
                             </jdbc>
 
-                            <configurationFile>configs/jOOQ/shared-db.xml</configurationFile>
-                            <!--<configurationFile>configs/jOOQ/server-db.xml</configurationFile>-->
+                            <!--<configurationFile>configs/jOOQ/shared-db.xml</configurationFile>-->
+                        <configurationFile>configs/jOOQ/server-db.xml</configurationFile>
 
-                        </configuration>
+                    </configuration>
 
-                        <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
+                    <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
                         <dependencies>
                             <dependency>
                                 <groupId>org.mariadb.jdbc</groupId>

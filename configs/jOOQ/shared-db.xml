@@ -19,11 +19,11 @@
                     <table>
                         <tableClass>
                             <transform>PASCAL</transform>
-                            <expression>Shared_$0</expression>
+                            <expression>Shared_$0_Table</expression>
                         </tableClass>
                         <recordClass>
                             <transform>PASCAL</transform>
-                            <expression>Shared_$0</expression>
+                            <expression>Shared_$0_Record</expression>
                         </recordClass>
                     </table>
                 </tables>

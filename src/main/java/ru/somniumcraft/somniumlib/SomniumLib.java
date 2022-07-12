@@ -80,7 +80,7 @@ public class SomniumLib extends SomniumPlugin {
         commandRegister.register();
 
         playerDTOCache = new SharedPlayerDTOCache();
-        playerDTOCache.loadData();
+        //playerDTOCache.loadData();
     }
 
     @Override
