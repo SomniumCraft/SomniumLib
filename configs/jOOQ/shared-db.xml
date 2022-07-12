@@ -1,0 +1,38 @@
+<configuration>
+    <generator>
+        <database>
+            <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
+            <includes>.*</includes>
+            <excludes></excludes>
+            <inputSchema>somnium_shared</inputSchema>
+        </database>
+        <strategy>
+            <matchers>
+                <schemas>
+                    <schema>
+                        <schemaClass>
+                            <expression>SharedDatabase</expression>
+                        </schemaClass>
+                    </schema>
+                </schemas>
+                <tables>
+                    <table>
+                        <tableClass>
+                            <transform>PASCAL</transform>
+                            <expression>Shared_$0</expression>
+                        </tableClass>
+                        <recordClass>
+                            <transform>PASCAL</transform>
+                            <expression>Shared_$0</expression>
+                        </recordClass>
+                    </table>
+                </tables>
+            </matchers>
+        </strategy>
+
+        <target>
+            <packageName>org.jooq.codegen.maven.example</packageName>
+            <directory>target/generated-sources/jooq/shared</directory>
+        </target>
+    </generator>
+</configuration>

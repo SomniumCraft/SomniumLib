@@ -17,129 +17,125 @@
     </properties>
     <url>somnium-craft.ru</url>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
+
+    <profiles>
+        <profile>
+            <id>deafault-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-                <!-- Specify the maven code generator plugin -->
-                <!-- Use org.jooq                for the Open Source Edition
-                         org.jooq.pro            for commercial editions with Java 17 support,
-                         org.jooq.pro-java-11    for commercial editions with Java 11 support,
-                         org.jooq.pro-java-8     for commercial editions with Java 8 support,
-                         org.jooq.trial          for the free trial edition with Java 17 support,
-                         org.jooq.trial-java-11  for the free trial edition with Java 11 support,
-                         org.jooq.trial-java-8   for the free trial edition with Java 8 support
+        <profile>
+            <id>generate-db-sources</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <version>3.17.2</version>
 
-                     Note: Only the Open Source Edition is hosted on Maven Central.
-                           Import the others manually from your distribution -->
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <version>3.17.2</version>
+                        <!-- The plugin should hook into the generate goal -->
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
 
-                <!-- The plugin should hook into the generate goal -->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                        <configuration>
 
-                <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
-                <dependencies>
-                    <dependency>
-                        <groupId>org.mariadb.jdbc</groupId>
-                        <artifactId>mariadb-java-client</artifactId>
-                        <version>3.0.6</version>
-                    </dependency>
-                </dependencies>
+                            <!-- JDBC connection parameters -->
+                            <jdbc>
+                                <driver>org.mariadb.jdbc.Driver</driver>
+                                <url>jdbc:mariadb://localhost:3306/</url>
+                                <user>root</user>
+                                <password></password>
+                            </jdbc>
 
-                <!-- Specify the plugin configuration.
-                     The configuration format is the same as for the standalone code generator -->
-                <configuration>
+                            <configurationFile>configs/jOOQ/shared-db.xml</configurationFile>
+                            <!--<configurationFile>configs/jOOQ/server-db.xml</configurationFile>-->
 
-                    <!-- JDBC connection parameters -->
-                    <jdbc>
-                        <driver>org.mariadb.jdbc.Driver</driver>
-                        <url>jdbc:mariadb://localhost:3307/</url>
-                        <user>root</user>
-                        <password></password>
-                    </jdbc>
+                        </configuration>
 
-                    <!-- Generator parameters -->
-                    <generator>
-                        <strategy>
-                            <matchers>
-                                <schemas>
-                                    <schema>
-                                        <schemaClass>
-                                            <expression>ServerDatabase</expression>
-                                        </schemaClass>
-                                    </schema>
-                                </schemas>
-                                <tables>
-                                    <table>
-                                        <tableClass>
-                                            <transform>PASCAL</transform>
-                                            <expression>Server_$0</expression>
-                                        </tableClass>
-                                        <recordClass>
-                                            <transform>PASCAL</transform>
-                                            <expression>Server_$0</expression>
-                                        </recordClass>
-                                    </table>
-                                </tables>
-                            </matchers>
-                        </strategy>
-                        <database>
-                            <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
-                            <includes>.*</includes>
-                            <excludes></excludes>
-                            <!-- In case your database supports catalogs, e.g. SQL Server:
-                            <inputCatalog>public</inputCatalog>
-                              -->
-                            <inputSchema>test</inputSchema>
-                        </database>
-                        <target>
-                            <packageName>org.jooq.codegen.maven.example</packageName>
-                            <directory>target/generated-sources/jooq/server</directory>
-                        </target>
-                    </generator>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
+                        <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.mariadb.jdbc</groupId>
+                                <artifactId>mariadb-java-client</artifactId>
+                                <version>3.0.6</version>
+                            </dependency>
+                        </dependencies>
+
+                        <!-- Specify the plugin configuration.
+                             The configuration format is the same as for the standalone code generator -->
+                    </plugin>
+                </plugins>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
 
     <repositories>
         <repository>
