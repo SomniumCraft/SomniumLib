@@ -1,12 +1,15 @@
 package ru.somniumcraft.somniumlib;
 
 import lombok.Getter;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import ru.somniumcraft.somniumlib.BasePlugin.SomniumPlugin;
 import ru.somniumcraft.somniumlib.CommandManager.CommandRegister;
 import ru.somniumcraft.somniumlib.Config.ServerDatabaseConfig;
 import ru.somniumcraft.somniumlib.Config.SharedConfig;
 import ru.somniumcraft.somniumlib.Config.SharedDatabaseConfig;
 import ru.somniumcraft.somniumlib.Database.Caching.SharedPlayerDTOCache;
+import ru.somniumcraft.somniumlib.Database.Connector.AbstractSQLConnector;
 import ru.somniumcraft.somniumlib.Database.Connector.IDatabaseConnector;
 import ru.somniumcraft.somniumlib.Database.Connector.MySQLConnector;
 import ru.somniumcraft.somniumlib.Database.Data.ServerDatabaseConfigurator;
@@ -30,10 +33,10 @@ public class SomniumLib extends SomniumPlugin {
     private ServerDatabaseConfig serverDatabaseConfig;
 
     @Getter
-    private IDatabaseConnector sharedDatabaseConnector;
+    private AbstractSQLConnector sharedDatabaseConnector;
 
     @Getter
-    private IDatabaseConnector serverDatabaseConnector;
+    private AbstractSQLConnector serverDatabaseConnector;
 
     @Getter
     private SharedPlayerDTOCache playerDTOCache;
@@ -68,6 +71,10 @@ public class SomniumLib extends SomniumPlugin {
 
         configureDatabase(new SharedDatabaseConfigurator() ,sharedDatabaseConnector);
         configureDatabase(new ServerDatabaseConfigurator() ,serverDatabaseConnector);
+
+        var abob = DSL.using(sharedDatabaseConnector.getDataSource(), SQLDialect.MYSQL);
+        var bobab = DSL.using(serverDatabaseConnector.getDataSource(), SQLDialect.MYSQL);
+
 
         commandRegister = new CommandRegister();
         commandRegister.register();

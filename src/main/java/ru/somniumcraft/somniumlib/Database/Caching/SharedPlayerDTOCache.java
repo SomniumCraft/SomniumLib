@@ -1,6 +1,5 @@
 package ru.somniumcraft.somniumlib.Database.Caching;
 
-import ru.somniumcraft.somniumlib.Database.Data.Data.SharedDatabase.AsyncWrappedSharedPlayerData;
 import ru.somniumcraft.somniumlib.Database.Data.Objects.SharedDatabase.SharedPlayerDTO;
 
 import java.util.HashMap;

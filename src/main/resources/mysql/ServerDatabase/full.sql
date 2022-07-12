@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `players` (
 `teleport_location_yaw` float,
 `teleport_location_pitch` float,
 `teleport_timestamp` datetime,
+`teleport_on_login` tinyint(1) NOT NULL DEFAULT 0,
 `login_timestamp` datetime,
 `total_playtime` bigint,
 `balance` decimal(13,2),
